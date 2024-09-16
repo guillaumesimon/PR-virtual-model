@@ -13,10 +13,10 @@ export const productModels: Record<string, ProductInfo> = {
     description: 'A cozy, warm fleece vest featuring a deep blue color with a simple, fitted design. It has a full front zip, a high neckline for extra coverage, and two side pockets for convenienceA small APC logo is present on the chest'
   },
   "2": {
-    name: 'Balzac top',
-    model: 'guillaumesimon/balzac-top:cfd014c1acb8e17bbbe18443b2cadf64a34b80e8d4080bf5a82b33b6722b0f32',
-    triggerWord: 'BLZCTOP',
-    description: 'a long-sleeve, ribbed knit top featuring classic navy and white horizontal stripes. It has a unique square neckline that adds a modern twist to the traditional striped design'
+    name: 'Sezane Jacket',
+    model: 'guillaumesimon/szn-betty:2dde94ce59e26dc188f352ce34f5822e5cdce7f31987ac2c4f8042819713062a',
+    triggerWord: 'BettySZN',
+    description: 'a chic, button-up cardigan featuring a soft brown knit fabric. It is detailed with a scalloped white trim along the collar, pocket flaps, and cuffs.The cardigan has a structured design with two front pockets.'
   },
   "3": {
     name: 'Carhartt Jacket',

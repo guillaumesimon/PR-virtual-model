@@ -13,10 +13,10 @@ export const modelModels: Record<string, ModelInfo> = {
     description: 'A young woman with medium-length light brown hair and a fringe styled casually in a natural way. She has an oval face with fair skin, expressive eyes, medium-full lips, and a softly defined jawline, giving her a balanced and engaging appearance.'
   },
   "2": {
-    name: 'Kenza',
+    name: 'Emilia',
     model: 'guillaumesimon/kenza',
-    triggerWord: 'KNZMDL',
-    description: 'A 20 years old woman of South Asian ethnicity, with long, thick black hair with a natural texture that frames her face elegantly. She has sharp facial features, including high cheekbones, full lips, and a warm complexion, which give her a striking and confident appearance. Her morphology is slender and toned, with a tall and lean figure'
+    triggerWord: 'EMLMDL',
+    description: 'A young woman with long, straight dark hair and a warm complexion. Her facial features include prominent eyes, full eyebrows, and a delicate jawline, giving her a confident and approachable appearance'
   },
   "3": {
     name: 'Model 3',
