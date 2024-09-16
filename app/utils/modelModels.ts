@@ -8,26 +8,26 @@ export type ModelInfo = {
 export const modelModels: Record<string, ModelInfo> = {
   "1": {
     name: 'Camille',
-    model: 'guillaumesimon/camille-sezane',
+    model: 'guillaumesimon/camille-sezane:8532b15bd9cef4b7e1adbc3216481179bd3f74a8590e2e0bf85c9cfb14260399',
     triggerWord: 'Camsimon',
-    description: 'A young woman with medium-length light brown hair and a fringe styled casually in a natural way. She has an oval face with fair skin, expressive eyes, medium-full lips, and a softly defined jawline, giving her a balanced and engaging appearance.'
+    description: 'A young woman with long, wavy brown hair and a natural, fresh-faced look'
   },
   "2": {
     name: 'Emilia',
-    model: 'guillaumesimon/kenza',
-    triggerWord: 'EMLMDL',
-    description: 'A young woman with long, straight dark hair and a warm complexion. Her facial features include prominent eyes, full eyebrows, and a delicate jawline, giving her a confident and approachable appearance'
+    model: 'guillaumesimon/emilia2',
+    triggerWord: 'EMLAMDL',
+    description: 'A 30 years old young woman with long, straight dark hair and a warm complexion. Her facial features include prominent eyes, full eyebrows, and a delicate jawline, giving her a confident and approachable appearance.'
   },
   "3": {
-    name: 'Model 3',
-    model: 'guillaumesimon/model3-finetune:latest',
-    triggerWord: 'MODEL3',
-    description: 'A stylish woman with shoulder-length blonde hair and a chic, urban style'
+    name: 'Emily',
+    model: 'guillaumesimon/emrato',
+    triggerWord: 'EMRTO',
+    description: 'a woman with long, straight dark brown hair, a medium to light complexion.'
   },
   "4": {
-    name: 'Model 4',
-    model: 'guillaumesimon/model4-finetune:latest',
-    triggerWord: 'MODEL4',
-    description: 'A diverse model with curly hair and a warm, friendly smile'
+    name: 'Valentin',
+    model: 'guillaumesimon/valentin',
+    triggerWord: 'VLTNMDL',
+    description: 'A black man with short hair and a warm, friendly smile'
   }
 };
