@@ -36,10 +36,10 @@ export default function CustomizationPage({ params }: CustomizationPageProps) {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <h1 className="text-xl sm:text-2xl mb-6 text-center">Customize your virtual Photoshoot</h1>
+      <h1 className="text-xl sm:text-2xl mb-8 text-center">Customize your virtual Photoshoot</h1>
       
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
+      <form onSubmit={handleSubmit} className="space-y-8">
+        <div className="space-y-2">
           <label htmlFor="position" className="block text-sm font-medium text-gray-700">Select Model Position</label>
           <select
             id="position"
@@ -56,7 +56,7 @@ export default function CustomizationPage({ params }: CustomizationPageProps) {
           </select>
         </div>
 
-        <div>
+        <div className="space-y-2">
           <label htmlFor="framing" className="block text-sm font-medium text-gray-700">Select Framing</label>
           <select
             id="framing"
@@ -72,7 +72,7 @@ export default function CustomizationPage({ params }: CustomizationPageProps) {
           </select>
         </div>
 
-        <div>
+        <div className="space-y-2">
           <label htmlFor="setting" className="block text-sm font-medium text-gray-700">Describe the Setting</label>
           <input
             type="text"
@@ -96,7 +96,7 @@ export default function CustomizationPage({ params }: CustomizationPageProps) {
           </div>
         </div>
 
-        <div className="flex justify-center">
+        <div className="flex justify-center pt-4">
           <button
             type="submit"
             className="bg-[#410CD9] text-white px-4 h-10 rounded-xl hover:bg-opacity-90 w-full sm:w-auto"

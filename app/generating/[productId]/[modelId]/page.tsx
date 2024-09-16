@@ -4,11 +4,33 @@ import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import LoadingSpinner from '../../../components/LoadingSpinner'
 
+const entertainingMessages = [
+  "Mixing colors like a fashion DJ...",
+  "Teaching AI the art of haute couture...",
+  "Stitching pixels with digital thread...",
+  "Consulting with virtual fashion gurus...",
+  "Calculating the perfect outfit algorithm...",
+  "Browsing through a galaxy of styles...",
+  "Decoding the matrix of fashion trends...",
+  "Summoning the spirits of fashion icons...",
+  "Calibrating the quantum wardrobe...",
+  "Navigating the multiverse of looks...",
+]
+
 export default function GeneratingPage() {
   const { productId, modelId } = useParams()
   const router = useRouter()
   const [isGenerating, setIsGenerating] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [messageIndex, setMessageIndex] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMessageIndex((prevIndex) => (prevIndex + 1) % entertainingMessages.length)
+    }, 5000) // Change message every 5 seconds
+
+    return () => clearInterval(interval)
+  }, [])
 
   useEffect(() => {
     const generateImage = async () => {
@@ -66,11 +88,16 @@ export default function GeneratingPage() {
 
   return (
     <div className="container mx-auto px-4 py-6 text-center">
-      <h1 className="text-xl sm:text-2xl mb-4">Generating Your Look</h1>
+      <h1 className="text-xl sm:text-2xl mb-4">Generating your virtual photoshooot</h1>
       {isGenerating && (
         <div className="mt-8">
           <LoadingSpinner />
-          <p className="mt-4">Please wait while we create your personalized image...</p>
+          <p className="mt-4 text-lg font-medium animate-pulse">
+            {entertainingMessages[messageIndex]}
+          </p>
+          <p className="mt-2 text-sm text-gray-500">
+            I am GPU poor so this process can take up to 2 min. Thanks for your patience!
+          </p>
         </div>
       )}
     </div>
