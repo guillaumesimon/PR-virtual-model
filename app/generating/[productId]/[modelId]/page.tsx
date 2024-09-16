@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { productModels } from '../../../utils/productModels'
-import { modelModels } from '../../../utils/modelModels'
 import LoadingSpinner from '../../../components/LoadingSpinner'
 
 export default function GeneratingPage() {
@@ -14,8 +12,6 @@ export default function GeneratingPage() {
 
   useEffect(() => {
     const generateImage = async () => {
-      const product = productModels[productId as string]
-      const model = modelModels[modelId as string]
       const customization = JSON.parse(localStorage.getItem('customization') || '{}')
 
       try {

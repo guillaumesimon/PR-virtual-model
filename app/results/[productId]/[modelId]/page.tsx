@@ -30,7 +30,7 @@ export default function ResultsPage({ params }: ResultsPageProps) {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <h1 className="text-xl sm:text-2xl mb-6 text-center">Here's Your Fabulous Look!</h1>
+      <h1 className="text-xl sm:text-2xl mb-6 text-center">Here&apos;s Your Fabulous Look!</h1>
       
       <div className="grid grid-cols-2 gap-4">
         {generatedImages.map((image, index) => (

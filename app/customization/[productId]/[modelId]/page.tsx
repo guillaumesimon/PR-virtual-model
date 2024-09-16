@@ -7,6 +7,14 @@ type CustomizationPageProps = {
   params: { productId: string; modelId: string }
 }
 
+const settingSuggestions = [
+  "Studio shot with minimal background",
+  "Rooftop in Paris",
+  "Deep blue neon light in Studio",
+  "Sunny beach at golden hour",
+  "Urban street with graffiti wall"
+]
+
 export default function CustomizationPage({ params }: CustomizationPageProps) {
   console.log('Rendering CustomizationPage for product:', params.productId, 'and model:', params.modelId)
 
@@ -20,6 +28,10 @@ export default function CustomizationPage({ params }: CustomizationPageProps) {
     const customization = { position, framing, setting }
     localStorage.setItem('customization', JSON.stringify(customization))
     router.push(`/generating/${params.productId}/${params.modelId}`)
+  }
+
+  const handleSettingSuggestionClick = (suggestion: string) => {
+    setSetting(suggestion)
   }
 
   return (
@@ -70,6 +82,18 @@ export default function CustomizationPage({ params }: CustomizationPageProps) {
             placeholder="E.g., beach at sunset, urban street, cozy indoor"
             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
           />
+          <div className="mt-2 flex flex-wrap gap-2">
+            {settingSuggestions.map((suggestion, index) => (
+              <button
+                key={index}
+                type="button"
+                onClick={() => handleSettingSuggestionClick(suggestion)}
+                className="px-3 py-1 bg-[#e8e1ff] text-xs rounded-full hover:bg-opacity-80 transition-colors"
+              >
+                {suggestion}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="flex justify-center">
