@@ -14,15 +14,15 @@ export const productModels: Record<string, ProductInfo> = {
   },
   "2": {
     name: 'Balzac top',
-    model: 'guillaumesimon/stylish-jacket-model',
-    triggerWord: 'stylish jacket',
-    description: 'A trendy leather jacket with a modern cut and silver zippers'
+    model: 'guillaumesimon/balzac-top:cfd014c1acb8e17bbbe18443b2cadf64a34b80e8d4080bf5a82b33b6722b0f32',
+    triggerWord: 'BLZCTOP',
+    description: 'a long-sleeve, ribbed knit top featuring classic navy and white horizontal stripes. It has a unique square neckline that adds a modern twist to the traditional striped design'
   },
   "3": {
     name: 'Carhartt Jacket',
     model: 'guillaumesimon/carhart-green:f641d6445f2ce7aeff136bc8df7c12b43937689f613bfb395d0d41117e847c56',
     triggerWord: 'CHRTGRN',
-    description: 'A durable, green Carhartt work jacket with multiple pockets'
+    description: 'a Sycamore green puffer jacket from Carhartt featuring a subtle Carhartt logo on the chest. A padded puffer jacket in a Sycamore green color, designed for comfort and warmth. It features a minimalist design with clean lines and lightweight insulation,'
   },
   "4": {
     name: 'Claudie P. Dress',

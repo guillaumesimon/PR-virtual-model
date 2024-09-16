@@ -7,16 +7,16 @@ export type ModelInfo = {
 
 export const modelModels: Record<string, ModelInfo> = {
   "1": {
-    name: 'Model 1',
+    name: 'Camille',
     model: 'guillaumesimon/camille-sezane',
     triggerWord: 'Camsimon',
-    description: 'A young woman with long, wavy brown hair and a natural, fresh-faced look'
+    description: 'A young woman with medium-length light brown hair and a fringe styled casually in a natural way. She has an oval face with fair skin, expressive eyes, medium-full lips, and a softly defined jawline, giving her a balanced and engaging appearance.'
   },
   "2": {
-    name: 'Model 2',
-    model: 'guillaumesimon/model2-finetune:latest',
+    name: 'Kenza',
+    model: 'guillaumesimon/kenza',
     triggerWord: 'KNZMDL',
-    description: 'A tall, athletic man with short dark hair and a confident stance'
+    description: 'A 20 years old woman of South Asian ethnicity, with long, thick black hair with a natural texture that frames her face elegantly. She has sharp facial features, including high cheekbones, full lips, and a warm complexion, which give her a striking and confident appearance. Her morphology is slender and toned, with a tall and lean figure'
   },
   "3": {
     name: 'Model 3',
