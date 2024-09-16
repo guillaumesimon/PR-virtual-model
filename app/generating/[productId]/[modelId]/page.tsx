@@ -81,7 +81,7 @@ export default function GeneratingPage({ params }: GeneratingPageProps) {
       
       <p className="text-lg text-center mb-4">{entertainingTexts[currentTextIndex]}</p>
       
-      <p className="text-sm text-gray-500 text-center">This may take a few moments. Please don't close the page.</p>
+      <p className="text-sm text-gray-500 text-center">This may take a few moments. Please don&apos;t close the page.</p>
     </div>
   )
 }

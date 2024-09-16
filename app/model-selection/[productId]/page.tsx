@@ -62,7 +62,7 @@ export default function ModelSelectionPage({ params }: ModelSelectionPageProps) 
         </button>
       </div>
       
-      <p className="mt-4 text-center text-base sm:text-lg">Choose a model who'll make your style shine!</p>
+      <p className="mt-4 text-center text-base sm:text-lg">Choose a model who&apos;ll make your style shine!</p>
     </div>
   )
 }
