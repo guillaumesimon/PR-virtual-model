@@ -2,16 +2,23 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { useState } from 'react'
 import { useParams } from 'next/navigation'
 import { productModels } from '../../utils/productModels'
 import { modelModels } from '../../utils/modelModels'
+import LoadingSpinner from '../../components/LoadingSpinner'
 
 export default function ModelSelectionPage() {
   console.log('Rendering ModelSelectionPage')
   const { productId } = useParams()
+  const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({})
 
   const product = productModels[productId as string]
   const models = Object.entries(modelModels)
+
+  const handleImageLoad = (id: string) => {
+    setLoadedImages(prev => ({ ...prev, [id]: true }))
+  }
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -22,11 +29,18 @@ export default function ModelSelectionPage() {
           <Link key={id} href={`/customization/${productId}/${id}`} className="block">
             <div className="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
               <div className="relative aspect-square">
+                {!loadedImages[id] && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <LoadingSpinner />
+                  </div>
+                )}
                 <Image
                   src={`/images/models/${id}.jpg`}
                   alt={model.name}
                   layout="fill"
                   objectFit="cover"
+                  onLoad={() => handleImageLoad(id)}
+                  style={{ opacity: loadedImages[id] ? 1 : 0 }}
                 />
               </div>
             </div>

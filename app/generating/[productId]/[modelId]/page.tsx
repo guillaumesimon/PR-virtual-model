@@ -1,87 +1,82 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import { productModels } from '../../../utils/productModels'
+import { modelModels } from '../../../utils/modelModels'
+import LoadingSpinner from '../../../components/LoadingSpinner'
 
-type GeneratingPageProps = {
-  params: { productId: string; modelId: string }
-}
-
-const entertainingTexts = [
-  "🛠️ Tailoring the perfect fit just for you...",
-  "🎨 Painting the scene as you imagined...",
-  "✨ Adding a sprinkle of style magic...",
-  "📸 Setting up the perfect shot...",
-  "🌟 Almost there! Fashion greatness awaits..."
-]
-
-export default function GeneratingPage({ params }: GeneratingPageProps) {
-  const [currentTextIndex, setCurrentTextIndex] = useState(0)
+export default function GeneratingPage() {
+  const { productId, modelId } = useParams()
   const router = useRouter()
-  const hasFetched = useRef(false) // Add this line
+  const [isGenerating, setIsGenerating] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (hasFetched.current) return // Prevent duplicate API calls
-    hasFetched.current = true
+    const generateImage = async () => {
+      const product = productModels[productId as string]
+      const model = modelModels[modelId as string]
+      const customization = JSON.parse(localStorage.getItem('customization') || '{}')
 
-    console.log('useEffect called in GeneratingPage');
-    console.log('Starting generation process for product:', params.productId, 'and model:', params.modelId)
+      try {
+        const response = await fetch('/api/generate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            productId,
+            modelId,
+            customization,
+          }),
+        })
 
-    const textInterval = setInterval(() => {
-      setCurrentTextIndex((prevIndex) => (prevIndex + 1) % entertainingTexts.length)
-    }, 3000)
-
-    // Fetch customization data from localStorage
-    const customization = JSON.parse(localStorage.getItem('customization') || '{}')
-
-    const requestBody = {
-      productId: params.productId,
-      modelId: params.modelId,
-      ...customization,
-    }
-
-    console.log('Sending request to API:', requestBody)
-
-    // Call the API to generate images
-    fetch('/api/generate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(requestBody),
-    })
-      .then(response => {
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error('Failed to generate image')
         }
-        return response.json()
-      })
-      .then(data => {
-        console.log('Received data from API:', data)
-        // Store the generated images in localStorage
-        localStorage.setItem('generatedImages', JSON.stringify(data.images))
-        // Navigate to the results page
-        router.push(`/results/${params.productId}/${params.modelId}`)
-      })
-      .catch(error => {
-        console.error('Error generating images:', error)
-        // Handle error (e.g., show error message to user)
-      })
 
-    return () => {
-      clearInterval(textInterval)
+        const data = await response.json()
+        if (data.imageUrls && Array.isArray(data.imageUrls)) {
+          localStorage.setItem('generatedImages', JSON.stringify(data.imageUrls))
+          router.push(`/results/${productId}/${modelId}`)
+        } else {
+          throw new Error('Unexpected response format')
+        }
+      } catch (err) {
+        console.error('Error generating image:', err)
+        setError('Failed to generate image. Please try again.')
+      } finally {
+        setIsGenerating(false)
+      }
     }
-  }, [params.productId, params.modelId, router])
+
+    generateImage()
+  }, [productId, modelId, router])
+
+  if (error) {
+    return (
+      <div className="container mx-auto px-4 py-6 text-center">
+        <h1 className="text-xl sm:text-2xl mb-4">Error</h1>
+        <p className="text-red-500">{error}</p>
+        <button
+          onClick={() => router.back()}
+          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          Go Back
+        </button>
+      </div>
+    )
+  }
 
   return (
-    <div className="container mx-auto px-4 py-6 flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-2xl sm:text-3xl font-bold mb-8 text-center">🧵 Stitching Your Style Together...</h1>
-      
-      <div className="w-16 h-16 border-t-4 border-blue-500 border-solid rounded-full animate-spin mb-8"></div>
-      
-      <p className="text-lg text-center mb-4">{entertainingTexts[currentTextIndex]}</p>
-      
-      <p className="text-sm text-gray-500 text-center">This may take a few moments. Please don&apos;t close the page.</p>
+    <div className="container mx-auto px-4 py-6 text-center">
+      <h1 className="text-xl sm:text-2xl mb-4">Generating Your Look</h1>
+      {isGenerating && (
+        <div className="mt-8">
+          <LoadingSpinner />
+          <p className="mt-4">Please wait while we create your personalized image...</p>
+        </div>
+      )}
     </div>
   )
 }

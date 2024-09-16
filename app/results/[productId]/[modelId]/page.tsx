@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import LoadingSpinner from '../../../components/LoadingSpinner'
 
@@ -21,11 +20,6 @@ export default function ResultsPage({ params }: ResultsPageProps) {
     setGeneratedImages(images)
   }, [])
 
-  const handleImageClick = (imageIndex: number) => {
-    console.log('Image clicked:', imageIndex)
-    router.push(`/photo-details/${params.productId}/${params.modelId}/${imageIndex}`)
-  }
-
   const handleImageLoad = (index: number) => {
     setImagesLoaded(prev => {
       const newState = [...prev]
@@ -36,14 +30,13 @@ export default function ResultsPage({ params }: ResultsPageProps) {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center">🎉 Here&apos;s Your Fabulous Look!</h1>
+      <h1 className="text-xl sm:text-2xl mb-6 text-center">Here's Your Fabulous Look!</h1>
       
       <div className="grid grid-cols-2 gap-4">
         {generatedImages.map((image, index) => (
           <div 
             key={index} 
-            className="border rounded-lg p-2 hover:shadow-lg transition-shadow cursor-pointer"
-            onClick={() => handleImageClick(index)}
+            className="border rounded-lg p-2 hover:shadow-lg transition-shadow"
           >
             <div className="relative aspect-square">
               {!imagesLoaded[index] && <LoadingSpinner />}
@@ -60,19 +53,14 @@ export default function ResultsPage({ params }: ResultsPageProps) {
         ))}
       </div>
       
-      <div className="mt-8 flex flex-col sm:flex-row justify-between items-center">
-        <Link href={`/customization/${params.productId}/${params.modelId}`} className="text-blue-500 hover:underline mb-4 sm:mb-0">
-          &larr; Back to Customization
-        </Link>
+      <div className="mt-8 flex justify-center">
         <button 
           onClick={() => router.push(`/generating/${params.productId}/${params.modelId}`)}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full sm:w-auto"
+          className="bg-[#410CD9] text-white px-4 h-10 rounded-xl hover:bg-opacity-90 w-full sm:w-auto"
         >
-          🔄 Create New Virtual Try-ons
+          Create New Virtual Try-ons
         </button>
       </div>
-      
-      <p className="mt-4 text-center text-base sm:text-lg">Tap an image to see it up close!</p>
     </div>
   )
 }
