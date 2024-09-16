@@ -75,7 +75,7 @@ export default function CustomizationPage({ params }: CustomizationPageProps) {
         <div className="flex justify-center">
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full sm:w-auto"
+            className="bg-[#410CD9] text-white px-4 h-10 rounded-xl hover:bg-opacity-90 w-full sm:w-auto"
           >
             Generate My Look
           </button>
