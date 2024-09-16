@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
@@ -25,7 +24,7 @@ export default function CustomizationPage({ params }: CustomizationPageProps) {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <h1 className="text-2xl sm:text-3xl font-bold mb-4 text-center">🎨 Customize Your Look!</h1>
+      <h1 className="text-xl sm:text-2xl mb-6 text-center">Customize your virtual Photoshoot</h1>
       
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -73,20 +72,15 @@ export default function CustomizationPage({ params }: CustomizationPageProps) {
           />
         </div>
 
-        <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-          <Link href={`/model-selection/${params.productId}`} className="text-blue-500 hover:underline">
-            &larr; Back to Model Selection
-          </Link>
+        <div className="flex justify-center">
           <button
             type="submit"
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full sm:w-auto"
           >
-            🚀 Generate My Look
+            Generate My Look
           </button>
         </div>
       </form>
-      
-      <p className="mt-4 text-center text-base sm:text-lg">Personalize how your model appears!</p>
     </div>
   )
 }
