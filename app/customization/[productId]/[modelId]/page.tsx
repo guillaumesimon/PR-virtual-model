@@ -4,9 +4,10 @@ import { useState, useEffect } from 'react';
 import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import { ProductInfo, getProduct } from '../../../utils/productModels';
 import { getModel } from '../../../utils/modelModels';
+import { RefreshCw } from 'lucide-react';
 
-// Define setting suggestions
-const settingSuggestions = [
+// Define initial setting suggestions
+const initialSettingSuggestions = [
   "Studio shot with minimal background",
   "Rooftop in Paris",
   "Deep blue neon light in Studio",
@@ -15,8 +16,6 @@ const settingSuggestions = [
 ];
 
 export default function CustomizationPage() {
-  console.log('Rendering CustomizationPage');
-
   const router = useRouter();
   const { productId, modelId } = useParams();
   const searchParams = useSearchParams();
@@ -25,10 +24,11 @@ export default function CustomizationPage() {
   const [pose, setPose] = useState('');
   const [setting, setSetting] = useState('');
   const [framing, setFraming] = useState('');
+  const [settingSuggestions, setSettingSuggestions] = useState(initialSettingSuggestions);
+  const [isGeneratingSuggestions, setIsGeneratingSuggestions] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log('Fetching data for product:', productId, 'and model:', modelId);
       const fetchedProduct = getProduct(productId as string);
       setProduct(fetchedProduct || null);
 
@@ -37,9 +37,6 @@ export default function CustomizationPage() {
         if (customModelParam) {
           const parsedCustomModel = JSON.parse(decodeURIComponent(customModelParam));
           setCustomModel(parsedCustomModel);
-          console.log('Set custom model:', parsedCustomModel);
-        } else {
-          console.log('No custom model found in search params');
         }
       } else {
         const fetchedModel = getModel(modelId as string);
@@ -50,45 +47,57 @@ export default function CustomizationPage() {
     fetchData();
   }, [productId, modelId, searchParams]);
 
-  useEffect(() => {
-    // Add console log to track the fetched data
-    console.log('Fetched data:', { product, customModel });
-  }, [product, customModel]);
-
   const handleGenerateImage = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Generating image with customization:', { pose, setting, framing });
 
     if (!product) {
       console.error('No product selected');
       return;
     }
 
-    // Prepare the customization data
     const customizationData = {
       position: pose,
       setting,
       framing,
     };
 
-    // Store customization in localStorage
     localStorage.setItem('customization', JSON.stringify(customizationData));
 
-    // Store custom model in localStorage if it exists
     if (customModel) {
       localStorage.setItem('customModel', JSON.stringify(customModel));
     } else {
       localStorage.removeItem('customModel');
     }
 
-    console.log('Navigating to generating page');
-
-    // Navigate to the generating page
     router.push(`/generating/${productId}/${modelId}`);
   };
 
   const handleSettingSuggestionClick = (suggestion: string) => {
     setSetting(suggestion);
+  };
+
+  const handleGenerateNewSuggestions = async () => {
+    setIsGeneratingSuggestions(true);
+    try {
+      const response = await fetch('/api/generate-settings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ currentSettings: settingSuggestions }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate new suggestions');
+      }
+      const data = await response.json();
+      setSettingSuggestions(data.suggestions);
+    } catch (error) {
+      console.error('Error generating new suggestions:', error);
+      alert('Failed to generate new suggestions. Please try again.');
+    } finally {
+      setIsGeneratingSuggestions(false);
+    }
   };
 
   if (!product) {
@@ -100,6 +109,7 @@ export default function CustomizationPage() {
       <h1 className="text-xl sm:text-2xl mb-8 text-center">Customize your virtual Photoshoot</h1>
       
       <form onSubmit={handleGenerateImage} className="space-y-8">
+        {/* Pose selection */}
         <div className="space-y-2">
           <label htmlFor="pose" className="block text-sm font-medium text-gray-700">Select Model Position</label>
           <select
@@ -117,6 +127,7 @@ export default function CustomizationPage() {
           </select>
         </div>
 
+        {/* Framing selection */}
         <div className="space-y-2">
           <label htmlFor="framing" className="block text-sm font-medium text-gray-700">Select Framing</label>
           <select
@@ -133,6 +144,7 @@ export default function CustomizationPage() {
           </select>
         </div>
 
+        {/* Setting input and suggestions */}
         <div className="space-y-2">
           <label htmlFor="setting" className="block text-sm font-medium text-gray-700">Describe the Setting</label>
           <input
@@ -154,9 +166,19 @@ export default function CustomizationPage() {
                 {suggestion}
               </button>
             ))}
+            <button
+              type="button"
+              onClick={handleGenerateNewSuggestions}
+              disabled={isGeneratingSuggestions}
+              className="px-3 py-1 bg-[#e8e1ff] text-xs rounded-full hover:bg-opacity-80 transition-colors flex items-center"
+            >
+              <RefreshCw size={12} className="mr-1" />
+              {isGeneratingSuggestions ? 'Generating...' : 'New Ideas'}
+            </button>
           </div>
         </div>
 
+        {/* Submit button */}
         <div className="flex justify-center pt-4">
           <button
             type="submit"
