@@ -32,7 +32,7 @@ export default function ResultsPage() {
     return (
       <div className="container mx-auto px-4 py-6 text-center">
         <h1 className="text-2xl mb-4">Oops! Our digital catwalk is empty!</h1>
-        <p className="mb-4">Looks like our AI models took an unexpected coffee break. Let's get them back to work!</p>
+        <p className="mb-4">Looks like our AI models took an unexpected coffee break. Let&apos;s get them back to work!</p>
         <button
           onClick={() => router.push(`/customization/${productId}/${modelId}`)}
           className="bg-[#410CD9] text-white px-4 h-10 rounded-xl hover:bg-opacity-90"
