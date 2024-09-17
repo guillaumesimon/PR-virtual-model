@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import { ProductInfo, getProduct } from '../../../utils/productModels';
-import { ModelInfo, getModel } from '../../../utils/modelModels';
+import { getModel } from '../../../utils/modelModels';
 
 // Define setting suggestions
 const settingSuggestions = [
@@ -43,15 +43,17 @@ export default function CustomizationPage() {
         }
       } else {
         const fetchedModel = getModel(modelId as string);
-        // Use setCustomModel instead of setModel
         setCustomModel(fetchedModel || null);
       }
     };
 
     fetchData();
+  }, [productId, modelId, searchParams]);
+
+  useEffect(() => {
     // Add console log to track the fetched data
     console.log('Fetched data:', { product, customModel });
-  }, [productId, modelId, searchParams]);
+  }, [product, customModel]);
 
   const handleGenerateImage = async (e: React.FormEvent) => {
     e.preventDefault();
