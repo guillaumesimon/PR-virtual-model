@@ -1,22 +1,36 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function CreateModel() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const productId = searchParams.get('productId');
+  const [productId, setProductId] = useState<string | null>(null);
 
   const [gender, setGender] = useState('female');
   const [hairColor, setHairColor] = useState('blonde');
   const [ethnicity, setEthnicity] = useState('caucasian');
 
+  useEffect(() => {
+    // Get productId from searchParams in useEffect to avoid server-side errors
+    const id = searchParams.get('productId');
+    setProductId(id);
+  }, [searchParams]);
+
   const handleContinue = () => {
+    if (!productId) {
+      console.error('No product ID found');
+      return;
+    }
     const customModel = { gender, hairColor, ethnicity };
     console.log('Fabulous custom model created:', customModel);
     router.push(`/customization/${productId}/custom?customModel=${encodeURIComponent(JSON.stringify(customModel))}`);
   };
+
+  if (!productId) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="container mx-auto px-4 py-6">
