@@ -26,8 +26,8 @@ export const productModels: Record<string, ProductInfo> = {
   },
   "4": {
     name: 'Claudie P. Dress',
-    model: 'guillaumesimon/cool-cap-model',
-    triggerWord: 'cool cap',
-    description: 'A sleek baseball cap with an adjustable strap at the back'
+    model: 'guillaumesimon/claudiedress',
+    triggerWord: 'CLDPRLTPRDCT',
+    description: 'A white dress'
   }
 };

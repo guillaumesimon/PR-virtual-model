@@ -16,7 +16,7 @@ export const modelModels: Record<string, ModelInfo> = {
     name: 'Emilia',
     model: 'guillaumesimon/emilia2',
     triggerWord: 'EMLAMDL',
-    description: 'A 30 years old young woman with long, straight dark hair and a warm complexion. Her facial features include prominent eyes, full eyebrows, and a delicate jawline, giving her a confident and approachable appearance.'
+    description: 'A 30 years old young woman with long, straight dark hair.'
   },
   "3": {
     name: 'Emily',
