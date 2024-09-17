@@ -34,7 +34,11 @@ export default function GeneratingPage() {
 
   useEffect(() => {
     const generateImage = async () => {
-      const customization = JSON.parse(localStorage.getItem('customization') || '{}')
+      const customization = JSON.parse(localStorage.getItem('customization') || '{}');
+      const customModelString = localStorage.getItem('customModel');
+      const customModel = customModelString ? JSON.parse(customModelString) : null;
+
+      console.log('Generating image with:', { productId, modelId, customization, customModel });
 
       try {
         const response = await fetch('/api/generate', {
@@ -46,58 +50,69 @@ export default function GeneratingPage() {
             productId,
             modelId,
             customization,
+            customModel,
           }),
-        })
+        });
 
         if (!response.ok) {
-          throw new Error('Failed to generate image')
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to generate image');
         }
 
-        const data = await response.json()
+        const data = await response.json();
         if (data.imageUrls && Array.isArray(data.imageUrls)) {
-          localStorage.setItem('generatedImages', JSON.stringify(data.imageUrls))
-          router.push(`/results/${productId}/${modelId}`)
+          localStorage.setItem('generatedImages', JSON.stringify(data.imageUrls));
+          router.push(`/results/${productId}/${modelId}`);
         } else {
-          throw new Error('Unexpected response format')
+          throw new Error('Unexpected response format');
         }
       } catch (err) {
-        console.error('Error generating image:', err)
-        setError('Failed to generate image. Please try again.')
+        console.error('Error generating image:', err);
+        setError(err instanceof Error ? err.message : 'Failed to generate image. Please try again.');
       } finally {
-        setIsGenerating(false)
+        setIsGenerating(false);
       }
-    }
+    };
 
-    generateImage()
-  }, [productId, modelId, router])
+    generateImage();
+  }, [productId, modelId, router]);
 
   if (error) {
     return (
-      <div className="container mx-auto px-4 py-6 text-center">
-        <h1 className="text-xl sm:text-2xl mb-4">Error</h1>
-        <p className="text-red-500">{error}</p>
-        <button
-          onClick={() => router.back()}
-          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          Go Back
-        </button>
+      <div className="container mx-auto px-4 py-6">
+        <h1 className="text-xl sm:text-2xl mb-8 text-center">Error</h1>
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+          <strong className="font-bold">Oops! </strong>
+          <span className="block sm:inline">{error}</span>
+        </div>
+        <div className="flex justify-center mt-6">
+          <button
+            onClick={() => router.back()}
+            className="bg-[#410CD9] text-white px-4 h-10 rounded-xl hover:bg-opacity-90"
+          >
+            Go Back
+          </button>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="container mx-auto px-4 py-6 text-center">
-      <h1 className="text-xl sm:text-2xl mb-4">Generating your virtual photoshooot</h1>
+    <div className="container mx-auto px-4 py-6">
+      <h1 className="text-xl sm:text-2xl mb-8 text-center">Generating your virtual photoshoot</h1>
       {isGenerating && (
-        <div className="mt-8">
-          <LoadingSpinner />
-          <p className="mt-4 text-lg font-medium animate-pulse">
+        <div className="mt-8 space-y-8">
+          <div className="flex justify-center">
+            <LoadingSpinner />
+          </div>
+          <p className="text-lg font-medium text-center animate-pulse">
             {entertainingMessages[messageIndex]}
           </p>
-          <p className="mt-2 text-sm text-gray-500">
-            I am GPU poor so this process can take up to 2 min. Thanks for your patience!
-          </p>
+          <div className="bg-[#e8e1ff] p-4 rounded-lg">
+            <p className="text-sm text-gray-700 text-center">
+              I am GPU poor so this process can take up to 2 min. Thanks for your patience!
+            </p>
+          </div>
         </div>
       )}
     </div>

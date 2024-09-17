@@ -9,48 +9,65 @@ const replicate = new Replicate({
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const { productId, modelId, customization } = body;
+  const { productId, modelId, customization, customModel } = body;
   const { position, framing, setting } = customization;
 
-  console.log('Received request:', { productId, modelId, customization });
+  console.log('Received request:', { productId, modelId, customization, customModel });
   console.log('REPLICATE_API_TOKEN:', process.env.REPLICATE_API_TOKEN ? 'Set' : 'Not set');
 
   try {
     const productInfo: ProductInfo = productModels[productId];
-    const modelInfo: ModelInfo = modelModels[modelId];
 
-    if (!productInfo || !modelInfo) {
-      throw new Error('Invalid product or model ID');
+    if (!productInfo) {
+      throw new Error('Invalid product ID');
     }
 
     console.log('Starting image generation with Replicate API');
     console.log(`Using product model: ${productInfo.model}`);
-    console.log(`Using fashion model: ${modelInfo.model}`);
 
-    // Construct a detailed prompt using all available information
-    const prompt = `A ${framing} photo of ${modelInfo.description} wearing ${productInfo.description} (${productInfo.triggerWord}). 
-                    The model (${modelInfo.triggerWord}) is ${position} in a ${setting}. 
-                    High-quality, professional fashion photography, trending on fashion blogs.`;
+    let prompt: string;
+    let replicateInput: any = {
+      model: "dev",
+      negative_prompt: "ugly, disfigured, low quality, blurry, nsfw, extra limbs, missing limbs, deformed hands, out of frame",
+      width: 768,
+      height: 768,
+      num_outputs: 4,
+      guidance_scale: 7.5,
+      num_inference_steps: 50,
+      scheduler: "K_EULER_ANCESTRAL",
+    };
+
+    if (customModel) {
+      // Custom model scenario
+      const { gender, hairColor, ethnicity } = customModel; // Remove JSON.parse here
+      prompt = `A ${framing} photo of a ${ethnicity} ${gender} model with ${hairColor} hair wearing ${productInfo.description} (${productInfo.triggerWord}). 
+                The model is ${position} in a ${setting}. 
+                High-quality, professional fashion photography, trending on fashion blogs.`;
+      
+      console.log('Using custom model parameters:', { gender, hairColor, ethnicity });
+    } else {
+      // Existing model scenario
+      const modelInfo: ModelInfo = modelModels[modelId];
+      if (!modelInfo) {
+        throw new Error('Invalid model ID');
+      }
+      
+      prompt = `A ${framing} photo of ${modelInfo.description} wearing ${productInfo.description} (${productInfo.triggerWord}). 
+                The model (${modelInfo.triggerWord}) is ${position} in a ${setting}. 
+                High-quality, professional fashion photography, trending on fashion blogs.`;
+      
+      replicateInput.extra_lora = modelInfo.model;
+      replicateInput.extra_lora_scale = 1.5;
+      
+      console.log(`Using fashion model: ${modelInfo.model}`);
+    }
 
     console.log('Generated prompt:', prompt);
+    replicateInput.prompt = prompt;
 
     const output = await replicate.run(
       productInfo.model,
-      {
-        input: {
-          model: "dev",
-          prompt: prompt,
-          negative_prompt: "ugly, disfigured, low quality, blurry, nsfw, extra limbs, missing limbs, deformed hands, out of frame",
-          width: 768,
-          height: 768,
-          num_outputs: 4,
-          guidance_scale: 7.5,
-          num_inference_steps: 50,
-          scheduler: "K_EULER_ANCESTRAL",
-          extra_lora: modelInfo.model,
-          extra_lora_scale: 1.5,
-        }
-      }
+      { input: replicateInput }
     );
 
     console.log('Replicate output:', output);
@@ -65,7 +82,6 @@ export async function POST(req: Request) {
   } catch (error: unknown) {
     console.error('Error generating images:', error);
     
-    // Type guard to check if error is an instance of Error
     if (error instanceof Error) {
       return NextResponse.json({ error: 'Error generating images', details: error.message }, { status: 500 });
     } else {
