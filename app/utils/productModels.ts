@@ -33,7 +33,7 @@ export const productModels: Record<string, ProductInfo> = {
     name: 'Claudie P. Dress',
     model: 'guillaumesimon/claudiedress:f1880212ea8ce9459442a2f7d2034454ed6750c04da0acca962cf1f82507328c',
     triggerWord: 'CLDPRLTPRDCT',
-    description: 'A white dress'
+    description: 'a cream-colored, ribbed-knit, long-sleeved maxi dress with an asymmetrical draped neckline that extends into a scarf-like detail. It is form-fitting and designed with a vertical rib pattern throughout, paired with a high neck'
   }
 };
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import LoadingSpinner from '../../../components/LoadingSpinner'
 
@@ -23,6 +23,7 @@ export default function GeneratingPage() {
   const [isGenerating, setIsGenerating] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [messageIndex, setMessageIndex] = useState(0)
+  const generationInitiated = useRef(false)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -32,50 +33,55 @@ export default function GeneratingPage() {
     return () => clearInterval(interval)
   }, [])
 
-  useEffect(() => {
-    const generateImage = async () => {
-      const customization = JSON.parse(localStorage.getItem('customization') || '{}');
-      const customModelString = localStorage.getItem('customModel');
-      const customModel = customModelString ? JSON.parse(customModelString) : null;
+  const generateImage = useCallback(async () => {
+    if (generationInitiated.current) return;
+    generationInitiated.current = true;
 
-      console.log('Generating image with:', { productId, modelId, customization, customModel });
+    const customization = JSON.parse(localStorage.getItem('customization') || '{}');
+    const customModelString = localStorage.getItem('customModel');
+    const customModel = customModelString ? JSON.parse(customModelString) : null;
 
-      try {
-        const response = await fetch('/api/generate', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            productId,
-            modelId,
-            customization,
-            customModel,
-          }),
-        });
+    console.log('Generating image with:', { productId, modelId, customization, customModel });
 
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || 'Failed to generate image');
-        }
+    try {
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          productId,
+          modelId,
+          customization,
+          customModel,
+        }),
+      });
 
-        const data = await response.json();
-        if (data.imageUrls && Array.isArray(data.imageUrls)) {
-          localStorage.setItem('generatedImages', JSON.stringify(data.imageUrls));
-          router.push(`/results/${productId}/${modelId}`);
-        } else {
-          throw new Error('Unexpected response format');
-        }
-      } catch (err) {
-        console.error('Error generating image:', err);
-        setError(err instanceof Error ? err.message : 'Failed to generate image. Please try again.');
-      } finally {
-        setIsGenerating(false);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to generate image');
       }
-    };
 
-    generateImage();
+      const data = await response.json();
+      if (data.imageUrls && Array.isArray(data.imageUrls)) {
+        localStorage.setItem('generatedImages', JSON.stringify(data.imageUrls));
+        router.push(`/results/${productId}/${modelId}`);
+      } else {
+        throw new Error('Unexpected response format');
+      }
+    } catch (err) {
+      console.error('Error generating image:', err);
+      setError(err instanceof Error ? err.message : 'Failed to generate image. Please try again.');
+    } finally {
+      setIsGenerating(false);
+    }
   }, [productId, modelId, router]);
+
+  useEffect(() => {
+    if (isGenerating) {
+      generateImage();
+    }
+  }, [generateImage, isGenerating]);
 
   if (error) {
     return (

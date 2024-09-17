@@ -93,10 +93,10 @@ export default function ModelSelectionPage() {
           href={`/create-model?productId=${productId}`}
           className="block border rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
         >
-          <div className="relative aspect-square flex items-center justify-center bg-gray-100">
+          <div className="relative aspect-square flex items-center justify-center bg-white">
             <div className="text-center">
-              <p className="text-4xl mb-2">+</p>
-              <p className="text-xl">Create Custom Model</p>
+              <p className="text-3xl mb-2 text-gray-400">+</p>
+              <p className="text-sm text-gray-500">Create your own model</p>
             </div>
           </div>
         </Link>

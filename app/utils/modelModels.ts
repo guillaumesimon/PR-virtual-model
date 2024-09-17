@@ -10,7 +10,7 @@ export const modelModels: Record<string, ModelInfo> = {
   "1": {
     id: "1",
     name: 'Camille',
-    model: 'guillaumesimon/camille-sezane:8532b15bd9cef4b7e1adbc3216481179bd3f74a8590e2e0bf85c9cfb14260399',
+    model: 'guillaumesimon/camille-sezane',
     triggerWord: 'Camsimon',
     description: 'A young woman with long, wavy brown hair and a natural, fresh-faced look'
   },
