@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     console.log(`Using product model: ${productInfo.model}`);
 
     let prompt: string;
-    let replicateInput: any = {
+    const replicateInput: Record<string, unknown> = {
       model: "dev",
       negative_prompt: "ugly, disfigured, low quality, blurry, nsfw, extra limbs, missing limbs, deformed hands, out of frame",
       width: 768,

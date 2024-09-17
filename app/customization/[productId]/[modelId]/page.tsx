@@ -21,8 +21,7 @@ export default function CustomizationPage() {
   const { productId, modelId } = useParams();
   const searchParams = useSearchParams();
   const [product, setProduct] = useState<ProductInfo | null>(null);
-  const [model, setModel] = useState<ModelInfo | null>(null);
-  const [customModel, setCustomModel] = useState<any | null>(null);
+  const [customModel, setCustomModel] = useState<Record<string, string> | null>(null);
   const [pose, setPose] = useState('');
   const [setting, setSetting] = useState('');
   const [framing, setFraming] = useState('');
@@ -44,11 +43,14 @@ export default function CustomizationPage() {
         }
       } else {
         const fetchedModel = getModel(modelId as string);
-        setModel(fetchedModel || null);
+        // Use setCustomModel instead of setModel
+        setCustomModel(fetchedModel || null);
       }
     };
 
     fetchData();
+    // Add console log to track the fetched data
+    console.log('Fetched data:', { product, customModel });
   }, [productId, modelId, searchParams]);
 
   const handleGenerateImage = async (e: React.FormEvent) => {

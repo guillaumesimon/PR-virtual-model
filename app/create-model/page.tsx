@@ -21,10 +21,10 @@ export default function CreateModel() {
   return (
     <div className="container mx-auto px-4 py-6">
       <h1 className="text-xl sm:text-2xl mb-8 text-center">Craft Your Dream Model</h1>
-      <p className="text-center mb-6 text-gray-600">Time to play fashion god! Let's create a model that's as unique as your style.</p>
+      <p className="text-center mb-6 text-gray-600">Time to play fashion god! Let&apos;s create a model that&apos;s as unique as your style.</p>
       <form className="space-y-8">
         <div className="space-y-2">
-          <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Pick Your Model's Swagger</label>
+          <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Pick Your Model&apos;s Swagger</label>
           <select
             id="gender"
             value={gender}
@@ -50,7 +50,7 @@ export default function CreateModel() {
           </select>
         </div>
         <div className="space-y-2">
-          <label htmlFor="ethnicity" className="block text-sm font-medium text-gray-700">Choose Your Model's Heritage</label>
+          <label htmlFor="ethnicity" className="block text-sm font-medium text-gray-700">Choose Your Model&apos;s Heritage</label>
           <select
             id="ethnicity"
             value={ethnicity}
