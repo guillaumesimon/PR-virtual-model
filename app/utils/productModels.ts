@@ -26,7 +26,7 @@ export const productModels: Record<string, ProductInfo> = {
   },
   "4": {
     name: 'Claudie P. Dress',
-    model: 'guillaumesimon/claudiedress',
+    model: 'guillaumesimon/claudiedress:f1880212ea8ce9459442a2f7d2034454ed6750c04da0acca962cf1f82507328c',
     triggerWord: 'CLDPRLTPRDCT',
     description: 'A white dress'
   }
