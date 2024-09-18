@@ -37,9 +37,9 @@ export async function POST(req: Request) {
       scheduler: "K_EULER_ANCESTRAL",
     };
 
-    if (customModel) {
+    if (customModel && 'gender' in customModel) {
       // Custom model scenario
-      const { gender, hairColor, ethnicity } = customModel; // Remove JSON.parse here
+      const { gender, hairColor, ethnicity } = customModel;
       prompt = `A ${framing} photo of a ${ethnicity} ${gender} model with ${hairColor} hair wearing ${productInfo.description} (${productInfo.triggerWord}). 
                 The model is ${position} in a ${setting}. 
                 High-quality, professional fashion photography, trending on fashion blogs.`;
