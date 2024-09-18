@@ -11,8 +11,10 @@ export default function PhotoDetailsPage() {
   const [image, setImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isChangingBackground, setIsChangingBackground] = useState(false);
   const [animatedUrl, setAnimatedUrl] = useState<string | null>(null);
   const [animationError, setAnimationError] = useState<string | null>(null);
+  const [backgroundError, setBackgroundError] = useState<string | null>(null);
 
   useEffect(() => {
     const storedImages = localStorage.getItem('generatedImages');
@@ -53,6 +55,34 @@ export default function PhotoDetailsPage() {
       console.error('Error animating image:', error);
       setAnimationError(error instanceof Error ? error.message : 'Failed to animate image. Please try again.');
       setIsAnimating(false);
+    }
+  };
+
+  const handleChangeBackground = async () => {
+    if (!image) return;
+    setIsChangingBackground(true);
+    setBackgroundError(null);
+    try {
+      const response = await fetch('/api/change-background', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ imageUrl: image }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to change background');
+      }
+
+      const data = await response.json();
+      setImage(data.newImageUrl);
+    } catch (error) {
+      console.error('Error changing background:', error);
+      setBackgroundError(error instanceof Error ? error.message : 'Failed to change background. Please try again.');
+    } finally {
+      setIsChangingBackground(false);
     }
   };
 
@@ -111,7 +141,7 @@ export default function PhotoDetailsPage() {
           />
         ) : (
           <Image
-            src={image}
+            src={image || ''}
             alt="Generated image"
             layout="fill"
             objectFit="contain"
@@ -128,8 +158,18 @@ export default function PhotoDetailsPage() {
         >
           {isAnimating ? 'Animating...' : '🎬 Animate'}
         </button>
+        <button
+          onClick={handleChangeBackground}
+          disabled={isChangingBackground}
+          className="bg-[#410CD9] text-white px-4 h-10 rounded-xl hover:bg-opacity-90 flex items-center justify-center disabled:opacity-50"
+        >
+          {isChangingBackground ? 'Changing background...' : '🎨 Change background'}
+        </button>
         {animationError && (
           <p className="text-red-500 text-sm">{animationError}</p>
+        )}
+        {backgroundError && (
+          <p className="text-red-500 text-sm">{backgroundError}</p>
         )}
       </div>
     </div>
