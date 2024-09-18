@@ -84,11 +84,3 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: error instanceof Error ? error.message : 'An unknown error occurred' }, { status: 500 });
   }
 }
-
-// This function is a placeholder. You need to implement it based on your storage solution.
-async function uploadToStorage(imageBuffer: Buffer): Promise<string> {
-  console.log('Simulating image upload to storage');
-  // Implement your image upload logic here
-  // Return the URL of the uploaded image
-  return 'https://example.com/uploaded-image.jpg';
-}
