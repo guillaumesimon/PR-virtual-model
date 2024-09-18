@@ -23,11 +23,6 @@ export default function PhotoDetailsPage() {
     setIsLoading(false);
   }, [imageIndex]);
 
-  const handleChangeBackground = () => {
-    console.log('Change background clicked');
-    // TODO: Implement change background functionality
-  };
-
   const handleAnimate = async () => {
     if (!image) return;
     setIsAnimating(true);
@@ -79,7 +74,7 @@ export default function PhotoDetailsPage() {
       }
     } catch (error) {
       console.error('Error checking animation status:', error);
-      alert('Failed to retrieve animated image. Please try again.');
+      setAnimationError('Failed to retrieve animated image. Please try again.');
       setIsAnimating(false);
     }
   };
