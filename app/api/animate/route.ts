@@ -17,7 +17,7 @@ export async function POST(req: Request) {
         'Authorization': `Bearer ${process.env.LUMA_API_KEY}`,
       },
       body: JSON.stringify({
-        prompt: "Create a smooth, subtle animation of this fashion model",
+        prompt: "Create a smooth, slow horizontal traveling shot of this fashion model. The camera should move gently from left to right, revealing more of the scene. Maintain a steady, cinematic pace throughout the animation.",
         keyframes: {
           frame0: {
             type: "image",
@@ -25,7 +25,6 @@ export async function POST(req: Request) {
           }
         },
         loop: true,
-        aspect_ratio: "3:4"
       }),
     });
 

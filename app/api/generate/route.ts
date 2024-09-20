@@ -41,8 +41,7 @@ export async function POST(req: Request) {
       // Custom model scenario
       const { gender, hairColor, ethnicity } = customModel;
       prompt = `A ${framing} photo of a ${ethnicity} ${gender} model with ${hairColor} hair wearing ${productInfo.description} (${productInfo.triggerWord}). 
-                The model is ${position} in a ${setting}. 
-                High-quality, professional fashion photography, trending on fashion blogs.`;
+                The model is ${position} in a ${setting}. High-quality, professional fashion photography, trending on fashion blogs. Ensure a clear, front-facing view with a confident and elegant pose.`;
       
       console.log('Using custom model parameters:', { gender, hairColor, ethnicity });
     } else {
@@ -53,8 +52,7 @@ export async function POST(req: Request) {
       }
       
       prompt = `A ${framing} photo of ${modelInfo.description} wearing ${productInfo.description} (${productInfo.triggerWord}). 
-                The model (${modelInfo.triggerWord}) is ${position} in a ${setting}. 
-                High-quality, professional fashion photography, trending on fashion blogs.`;
+                The model (${modelInfo.triggerWord}) is ${position} in a ${setting} and facing the camera. High-quality, professional fashion photography, trending on fashion blogs.Ensure a clear, front-facing view with a confident and elegant pose.`;
       
       replicateInput.extra_lora = modelInfo.model;
       replicateInput.extra_lora_scale = 1.5;
